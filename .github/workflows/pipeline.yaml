@@ -2,15 +2,10 @@ name: Pipeline
 run-name: Deploy in live by ${{ github.actor }}
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "*.md"
+      - develop
 
 jobs:
   job1:
