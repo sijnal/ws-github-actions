@@ -20,6 +20,9 @@ jobs:
       
       - name: Print message job1
         run: echo "Hello, world!"
+        
+      - name: Echo file
+        run: cat hola.txt
   
   job2:
     needs: job1
