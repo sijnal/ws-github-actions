@@ -1,10 +1,16 @@
+name: Pipeline
+run-name: Deploy in live
+
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  demo:
+  job1:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,6 +22,7 @@ jobs:
         run: echo "Hello, world!"
   
   job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
       - name: Print message job2
