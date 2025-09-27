@@ -22,7 +22,7 @@ jobs:
       - run: ls -la
       
       - name: Print message job1
-        run: echo "Hello, world!"
+        run: echo "Hello, Algo-${{ vars.NAME }}-MÁS!"
 
       - name: Echo file
         run: cat hola.txt
