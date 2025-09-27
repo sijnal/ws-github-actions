@@ -6,14 +6,31 @@ on:
     branches:
       - main
       - develop
+      - test
 
 jobs:
   job1:
-    environment: ${{ github.ref_name == 'main' && 'production' || 'develop' }}
+    environment: ${{ github.ref_name == 'main' && 'production' || github.ref_name == 'develop' && 'develop' || 'test' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Greet the reader
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Started deploy by ${{ github.actor }} on ${{ github.ref_name }}!"
+
       - name: Print message job1
         run: echo "Hello, ${{ vars.NAME }}!"
       
       - name: ECHO SECRETO
         run: echo "${{ secrets.SECRETO }}" > secreto.txt
+        
+      - name: Greet the reader
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Finished deploy by ${{ github.actor }} on ${{ github.ref_name }}, ${{ vars.NAME }}!"
