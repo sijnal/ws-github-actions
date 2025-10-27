@@ -3,14 +3,20 @@ run-name: Deploy in live by ${{ github.actor }}
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run mode (no actual execution)'
+        required: false
+        type: boolean
+        default: false
+      drop_collections:
+        description: 'Drop existing collections before import'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "*.md"
 
 jobs:
   job1:
@@ -22,3 +28,27 @@ jobs:
       
       - name: ECHO SECRETO
         run: echo "${{ secrets.SECRETO }}" > secreto.txt
+      
+      - name: Validate Triple Conditional Logic
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          echo "=== Validación de Condicionales ==="
+          echo "🔍 dry_run value: ${{ inputs.dry_run }}"
+          echo "🔍 drop_collections value: ${{ inputs.drop_collections }}"
+          echo "🔍 github.event value: ${{ github.event }}"
+          echo ""
+          
+          DATA_DIR="data/Product System Data Database"
+          echo "📁 Data directory: $DATA_DIR"
+          echo ""
+          
+          if [ "${{ github.event }}" = "push" ]; then
+            echo "🔄 Automatic import: Using zero-downtime drop-and-reload strategy"
+            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --drop-collections"
+          elif [ "${{ inputs.drop_collections }}" = "false" ]; then
+            echo "📝 Manual import: Using legacy upsert strategy (--no-drop-collections)"
+            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --no-drop-collections"
+          else
+            echo "🔄 Manual import: Using zero-downtime drop-and-reload strategy"
+            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --drop-collections"
+          fi
