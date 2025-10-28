@@ -38,7 +38,7 @@ jobs:
           echo "📁 Data directory: $DATA_DIR"
           echo ""
           
-          echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR'  ${{ inputs.drop_collections && '-' || '--no' }}-drop-collections"
+          echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR'  ${{ !inputs.drop_collections && '--no' || '-' }}-drop-collections"
           
           echo "================================================"
 
