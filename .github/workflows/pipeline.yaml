@@ -41,7 +41,7 @@ jobs:
           # if drop_collections is true or github.event_name is push, then add --drop-collections, otherwise add --no-drop-collections
           echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py \
               --data-dir '$DATA_DIR' \
-              ${{ (inputs.drop_collections || github.event_name == 'push') && '-' || '--no-drop-collections' }}"
+              ${{ (inputs.drop_collections || github.event_name == 'push') && '-' || '--no' }}-drop-collections"
           
           echo "================================================"
 
