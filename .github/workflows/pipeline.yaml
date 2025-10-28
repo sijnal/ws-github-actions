@@ -44,14 +44,5 @@ jobs:
               ${{ (inputs.drop_collections || github.event_name == 'push') && '-' || '--no' }}-drop-collections"
           
           echo "================================================"
-
-          if [ "${{ github.event_name  }}" = "push" ]; then
-            echo "🔄 Automatic import: Using zero-downtime drop-and-reload strategy"
-            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --drop-collections"
-          elif [ "${{ inputs.drop_collections }}" = "false" ]; then
-            echo "📝 Manual import: Using legacy upsert strategy (--no-drop-collections)"
-            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --no-drop-collections"
-          else
-            echo "🔄 Manual import: Using zero-downtime drop-and-reload strategy"
-            echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --drop-collections"
-          fi
+          echo "✅ Mode: Live Import"
+          echo "${{ inputs.drop_collections && '🔄 Strategy: Zero-downtime drop-and-reload' || '📝 Strategy: Legacy upsert (no drop)' }}"
