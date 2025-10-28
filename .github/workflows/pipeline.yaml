@@ -38,6 +38,10 @@ jobs:
           echo "📁 Data directory: $DATA_DIR"
           echo ""
           
+          echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR'  ${{ inputs.drop_collections && '-' || '--no' }}-drop-collections"
+          
+          echo "================================================"
+
           if [ "${{ github.event_name  }}" = "push" ]; then
             echo "🔄 Automatic import: Using zero-downtime drop-and-reload strategy"
             echo "➡️  Comando simulado: python3 scripts/system_database_setup/import_mongodb_data.py --data-dir '$DATA_DIR' --drop-collections"
